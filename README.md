@@ -1,66 +1,24 @@
-## Foundry
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
-
-Foundry consists of:
-
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
-
-## Documentation
-
-https://book.getfoundry.sh/
-
-## Usage
-
-### Build
 
 ```shell
-$ forge build
+forge verify-contract --rpc-url $RPC_URL --verifier etherscan --verifier-url 'https://explorer.roothashpay.com/api/' 0xC10F6186Bb3C9E68516D0e2F829f1b95C323d542 ./src/TreasureManager.sol:TreasureManager
+```
+- 部署合约的地址
+```shell
+treasureManagerImplementation===== 0xA93983586Ea6527A485E9C572C8a5e139b7049Ce
+treasureManager===== 0x7111cfFF8887E90596fdC2e4c7d6128E1D03fC53
+treasureManagerProxyAdmin===== 0x22E8A434D5F420CE6e5a4389219cfD8B13E0D060
 ```
 
-### Test
 
 ```shell
-$ forge test
+forge verify-contract --rpc-url $RPC_URL --verifier etherscan --verifier-url 'https://api.etherscan.io/v2/api/' 0x7111cfFF8887E90596fdC2e4c7d6128E1D03fC53 ./src/TreasureManager.sol:TreasureManager
 ```
 
-### Format
-
 ```shell
-$ forge fmt
+1Q4393KI12224CM53G4FPAP4GJVGY8VF6S
 ```
 
-### Gas Snapshots
-
 ```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/TreasureManager.sol.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
+'https://api.etherscan.io/v2/api?apikey=YourApiKeyToken
 ```

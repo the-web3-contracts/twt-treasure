@@ -40,7 +40,8 @@ contract TreasureManagerScript is Script {
             )
         );
 
-        console.log("address=====", address(treasureManager));
+        console.log("treasureManagerImplementation=====", address(treasureManagerImplementation));
+        console.log("treasureManager=====", address(treasureManager));
         console.log("treasureManagerProxyAdmin=====", address(treasureManagerProxyAdmin));
 
         vm.stopBroadcast();
