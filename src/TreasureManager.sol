@@ -79,8 +79,8 @@ contract TreasureManager is Initializable, OwnableUpgradeable, AccessControlUpgr
     }
 
     function depositERC20(IERC20 tokenAddress, uint256 amount) external returns (bool) {
-        tokenBalances[address(tokenAddress)] += amount;
         tokenAddress.safeTransferFrom(msg.sender, address(this), amount);
+        tokenBalances[address(tokenAddress)] += amount;
         emit DepositToken(
             address(tokenAddress),
             msg.sender,
@@ -112,17 +112,17 @@ contract TreasureManager is Initializable, OwnableUpgradeable, AccessControlUpgr
         }
     }
 
-    function claimToken(address tokenAddress) external nonReentrant {
+    function claimToken(address tokenAddress, address receiver) external nonReentrant {
         require(tokenAddress != address(0), "Invalid token address");
-        uint256 rewardAmount = userRewardAmounts[msg.sender][tokenAddress];
+        uint256 rewardAmount = userRewardAmounts[receiver][tokenAddress];
         require(rewardAmount > 0, "No reward available");
-        userRewardAmounts[msg.sender][tokenAddress] = 0;
+        userRewardAmounts[receiver][tokenAddress] = 0;
         tokenBalances[tokenAddress] -= rewardAmount;
         if (tokenAddress == ethAddress) {
-            (bool success, ) = msg.sender.call{value: rewardAmount}("");
+            (bool success, ) = receiver.call{value: rewardAmount}("");
             require(success, "ETH transfer failed");
         } else {
-            IERC20(tokenAddress).safeTransfer(msg.sender, rewardAmount);
+            IERC20(tokenAddress).safeTransfer(receiver, rewardAmount);
         }
     }
 
@@ -173,7 +173,11 @@ contract TreasureManager is Initializable, OwnableUpgradeable, AccessControlUpgr
         );
     }
 
-    function queryRewards(address _tokenAddress) public view returns (uint256) {
+    function queryRewards(address _tokenAddress) external view returns (uint256) {
         return userRewardAmounts[msg.sender][_tokenAddress];
+    }
+
+    function getWithdrawAddress() external view returns (address) {
+        return withdrawManager;
     }
 }

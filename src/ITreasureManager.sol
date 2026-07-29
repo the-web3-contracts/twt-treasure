@@ -8,11 +8,12 @@ interface ITreasureManager {
     function depositERC20(IERC20 tokenAddress, uint256 amount) external returns (bool);
     function grantRewards(address tokenAddress, address receiptAddress, uint256 amount) external;
     function claimAllTokens() external;
-    function claimToken(address tokenAddress) external;
+    function claimToken(address tokenAddress,  address receiver) external;
     function withdrawETH(address payable withdrawAddress, uint256 amount) external payable returns (bool);
     function withdrawERC20(IERC20 tokenAddress, address withdrawAddress, uint256 amount) external returns (bool);
     function setTokenWhiteList(address tokenAddress) external;
     function setWithdrawManager(address _withdrawManager) external;
     function queryRewards(address tokenAddress) external view returns(uint256);
     function getTokenWhiteList() external view returns(address[] memory);
+    function getWithdrawAddress() external view returns(address);
 }

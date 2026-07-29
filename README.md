@@ -1,24 +1,46 @@
+# 升级演示过程
 
-
-```shell
-forge verify-contract --rpc-url $RPC_URL --verifier etherscan --verifier-url 'https://explorer.roothashpay.com/api/' 0xC10F6186Bb3C9E68516D0e2F829f1b95C323d542 ./src/TreasureManager.sol:TreasureManager
+## 使用的钱包地址
 ```
-- 部署合约的地址
-```shell
-treasureManagerImplementation===== 0xA93983586Ea6527A485E9C572C8a5e139b7049Ce
-treasureManager===== 0x7111cfFF8887E90596fdC2e4c7d6128E1D03fC53
-treasureManagerProxyAdmin===== 0x22E8A434D5F420CE6e5a4389219cfD8B13E0D060
+Successfully created new keypair.
+Address:     0xd449306df27faB97ec0431F4558ab75966743983
+Private key: 0xb857bcf6f3ee005a79eea257a4ab467a3488b5006fa4a9dbba7d54a9a41aafa5
 ```
 
-
-```shell
-forge verify-contract --rpc-url $RPC_URL --verifier etherscan --verifier-url 'https://api.etherscan.io/v2/api/' 0x7111cfFF8887E90596fdC2e4c7d6128E1D03fC53 ./src/TreasureManager.sol:TreasureManager
+## 部署合约
+```
+forge script ./script/TreasureManagerScript.s.sol:TreasureManagerScript --rpc-url https://bsc-testnet.bnbchain.org  --broadcast
 ```
 
-```shell
-1Q4393KI12224CM53G4FPAP4GJVGY8VF6S
+- 部署结果
+
+```
+  treasureManagerImplementation===== 0x5e998237E062A12d2EF39F0010A08283f90E5be1
+  treasureManager===== 0x8afBD8325bE38051f7822297a98b6f045f99640C
+  treasureManagerProxyAdmin===== 0x4Cd55a8eeCE7DDbC14E3857c68d7361744534B23
 ```
 
-```shell
-'https://api.etherscan.io/v2/api?apikey=YourApiKeyToken
+升级前没有 getWithdrawAddress，调用报一下错误
+
 ```
+cast call --rpc-url https://bsc-testnet.bnbchain.org 0x8afBD8325bE38051f7822297a98b6f045f99640C "getWithdrawAddress()(address)"
+Error: server returned an error response: error code 3: execution reverted: 0x, data: "0x"
+
+cast call --rpc-url https://bsc-testnet.bnbchain.org 0x8afBD8325bE38051f7822297a98b6f045f99640C "withdrawManager()(address)"
+0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38
+```
+
+## 升级合约
+
+```
+forge script ./script/TreasureManagerScript.s.sol:TreasureManagerScript --sig "upgradeContract()" --rpc-url https://bsc-testnet.bnbchain.org  --broadcast
+```
+
+```
+cast call --rpc-url https://bsc-testnet.bnbchain.org 0x8afBD8325bE38051f7822297a98b6f045f99640C "getWithdrawAddress()(address)"
+0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38
+
+cast call --rpc-url https://bsc-testnet.bnbchain.org 0x8afBD8325bE38051f7822297a98b6f045f99640C "withdrawManager()(address)"
+0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38
+```
+
