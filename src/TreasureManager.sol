@@ -17,6 +17,7 @@ contract TreasureManager is Initializable, OwnableUpgradeable, AccessControlUpgr
 
     address public treasureManager;
     address public withdrawManager;
+    address public fundingManager;
 
     address[] public tokenWhiteList;
 
@@ -171,6 +172,10 @@ contract TreasureManager is Initializable, OwnableUpgradeable, AccessControlUpgr
         emit WithdrawManagerUpdate(
             withdrawManager
         );
+    }
+
+    function setTreasureManager(address _treasureManager) external onlyOwner {
+        treasureManager = _treasureManager;
     }
 
     function queryRewards(address _tokenAddress) external view returns (uint256) {

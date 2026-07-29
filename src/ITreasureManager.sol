@@ -13,6 +13,7 @@ interface ITreasureManager {
     function withdrawERC20(IERC20 tokenAddress, address withdrawAddress, uint256 amount) external returns (bool);
     function setTokenWhiteList(address tokenAddress) external;
     function setWithdrawManager(address _withdrawManager) external;
+    function setTreasureManager(address _treasureManager) external;
     function queryRewards(address tokenAddress) external view returns(uint256);
     function getTokenWhiteList() external view returns(address[] memory);
     function getWithdrawAddress() external view returns(address);

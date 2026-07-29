@@ -34,9 +34,9 @@ contract TreasureManagerScript is Script {
             address(treasureManagerImplementation),
             abi.encodeWithSelector(
                 TreasureManager.initialize.selector,
-                msg.sender,
-                msg.sender,
-                msg.sender
+                deployerAddress,
+                deployerAddress,
+                deployerAddress
             )
         );
 
@@ -49,6 +49,7 @@ contract TreasureManagerScript is Script {
 
     function upgradeContract() public {
         uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+        address deployerAddress = vm.addr(deployerPrivateKey);
         vm.startBroadcast(deployerPrivateKey);
 
         TreasureManager treasureManagerNewImplementation = new TreasureManager(); // 新的逻辑合约
@@ -65,6 +66,7 @@ contract TreasureManagerScript is Script {
             address(treasureManagerNewImplementation),
             hex""
         );
+
         vm.stopBroadcast();
     }
 
